@@ -2,8 +2,8 @@
 FROM python:3.10-slim
 
 # Set environment variables
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
 
 # Set working directory
 WORKDIR /app
@@ -11,19 +11,19 @@ WORKDIR /app
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     gcc \
-    && rm -rf /var/lib/apt/lists/*
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements (we don't have a requirements.txt, so install packages directly)
+# Install Python dependencies directly since no requirements.txt is provided
 RUN pip install --no-cache-dir flask psutil requests werkzeug
 
-# Copy the current directory contents into the container at /app
+# Copy app code into the container
 COPY . /app
 
-# Create uploads directory
+# Create uploads directory (in case your app saves files)
 RUN mkdir -p /app/uploads
 
-# Expose port 5000
+# Expose port Flask will run on
 EXPOSE 5000
 
-# Run the application
+# Command to run the app (ensure your main file is named app.py)
 CMD ["python", "app.py"]
