@@ -1,0 +1,82 @@
+/* Custom CSS for File Nexus */
+
+body {
+    background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+}
+
+h1, h3, h4 {
+    font-weight: 700;
+    color: #2c3e50;
+}
+
+.card {
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(44, 62, 80, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 30px rgba(44, 62, 80, 0.2);
+}
+
+.btn-primary, .btn-success, .btn-outline-info {
+    border-radius: 50px;
+    padding: 10px 25px;
+    font-weight: 600;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #1a73e8;
+    box-shadow: 0 6px 12px rgba(26, 115, 232, 0.5);
+}
+
+.btn-success:hover {
+    background-color: #28a745cc;
+    box-shadow: 0 6px 12px rgba(40, 167, 69, 0.5);
+}
+
+.btn-outline-info:hover {
+    background-color: #17a2b8;
+    color: white;
+    box-shadow: 0 6px 12px rgba(23, 162, 184, 0.5);
+}
+
+input.form-control {
+    border-radius: 8px;
+    border: 1.5px solid #ced4da;
+    transition: border-color 0.3s ease;
+}
+
+input.form-control:focus {
+    border-color: #1a73e8;
+    box-shadow: 0 0 8px rgba(26, 115, 232, 0.3);
+}
+
+.text-center p.lead {
+    font-size: 1.25rem;
+    color: #555;
+}
+
+.progress {
+    height: 25px;
+    border-radius: 12px;
+    background-color: #e9ecef;
+}
+
+.progress-bar {
+    font-weight: 600;
+    font-size: 1rem;
+    line-height: 25px;
+    border-radius: 12px;
+}
+
+.card-header {
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    font-weight: 700;
+    font-size: 1.25rem;
+}

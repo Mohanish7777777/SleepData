@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Transfer Status</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/custom.css">
+</head>
+<body class="bg-light">
+    <div class="container py-5">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0"><i class="fas fa-sync-alt"></i> Transfer Status</h3>
+            </div>
+            <div class="card-body" id="status-container">
+                <div class="text-center">
+                    <i class="fas fa-spinner fa-spin fa-3x"></i>
+                    <p class="mt-3">Loading transfer status...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const transferId = '{{ transfer_id }}';
+        
+        function updateStatus() {
+            fetch(`/api/status/${transferId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const container = document.getElementById('status-container');
+                    
+                    const content = `
+                        <div class="row align-items-center">
+                            <div class="col-md-2 text-center">
+                                <i class="${getFileIcon(data.filename)} fa-4x"></i>
+                            </div>
+                            <div class="col-md-10">
+                                <h4>${data.filename}</h4>
+                                <div class="progress my-3" style="height: 25px;">
+                                    <div class="progress-bar bg-success" 
+                                         style="width: ${data.progress}%">
+                                        ${Math.round(data.progress)}%
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <i class="fas fa-tachometer-alt"></i> Speed: ${data.speed}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <i class="fas fa-database"></i> Size: ${data.size}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <i class="fas fa-${data.type === 'download' ? 'download' : 'upload'}"></i> 
+                                        ${data.type.charAt(0).toUpperCase() + data.type.slice(1)}
+                                    </div>
+                                </div>
+                                ${data.download_url ? `
+                                    <div class="mt-3 text-center">
+                                        <a href="${data.download_url}" class="btn btn-success">
+                                            <i class="fas fa-download"></i> Download File
+                                        </a>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `;
+                    
+                    container.innerHTML = content;
+                    
+                    if (data.status !== 'completed' && data.status !== 'failed') {
+                        setTimeout(updateStatus, 1000);
+                    }
+                });
+        }
+
+        function getFileIcon(filename) {
+            // Simplified version matching Python logic
+            const ext = filename.split('.').pop().toLowerCase();
+            if (['jpg', 'jpeg', 'png', 'gif'].includes(ext)) return 'fas fa-file-image';
+            if (['mp4', 'mov', 'avi'].includes(ext)) return 'fas fa-file-video';
+            if (ext === 'pdf') return 'fas fa-file-pdf';
+            if (['zip', 'rar'].includes(ext)) return 'fas fa-file-archive';
+            return 'fas fa-file';
+        }
+
+        updateStatus();
+    </script>
+</body>
+</html>
